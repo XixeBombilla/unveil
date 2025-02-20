@@ -29,7 +29,10 @@ export const AccessibilitySettingsScreen = () => {
         <List.Section>
           <List.Subheader>Text Settings</List.Subheader>
           <View style={styles.sliderContainer}>
-            <Text>Font Size</Text>
+            <View style={styles.sliderHeader}>
+              <Text>Font Size</Text>
+              <Text>{Math.round(preferences.fontSize)}px</Text>
+            </View>
             <Slider
               value={preferences.fontSize}
               onValueChange={(value) =>
@@ -40,7 +43,10 @@ export const AccessibilitySettingsScreen = () => {
             />
           </View>
           <View style={styles.sliderContainer}>
-            <Text>Line Height</Text>
+            <View style={styles.sliderHeader}>
+              <Text>Line Height</Text>
+              <Text>{Math.round(preferences.lineHeight)}px</Text>
+            </View>
             <Slider
               value={preferences.lineHeight}
               onValueChange={(value) =>
@@ -52,7 +58,10 @@ export const AccessibilitySettingsScreen = () => {
             />
           </View>
           <View style={styles.sliderContainer}>
-            <Text>Letter Spacing</Text>
+            <View style={styles.sliderHeader}>
+              <Text>Letter Spacing</Text>
+              <Text>{Math.round(preferences.letterSpacing)}px</Text>
+            </View>
             <Slider
               value={preferences.letterSpacing}
               onValueChange={(value) =>
@@ -284,5 +293,10 @@ const styles = StyleSheet.create({
   },
   sliderContainer: {
     padding: 16,
+  },
+  sliderHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 8,
   },
 });

@@ -38,7 +38,7 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({
             <View style={styles.imageInfo}>
               {image.type === "background" && (
                 <IconButton
-                  icon="image-filter"
+                  icon="image-area"
                   size={16}
                   style={styles.typeIcon}
                 />
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   title: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
   },
   imageContainer: {
@@ -94,6 +94,6 @@ const styles = StyleSheet.create({
   },
   imageTitle: {
     flex: 1,
-    fontSize: 12,
+    fontSize: 14,
   },
 });

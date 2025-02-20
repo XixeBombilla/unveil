@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
 import { AccessibleReader } from "../components/AccessibleReader";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -36,27 +36,33 @@ export const ReaderScreen = () => {
   const handleExtracted = (data: any) => {
     setLoading(false);
     setExtractorUrl(null);
-    navigation.push("Reader", {
-      article: {
-        ...article,
-        title: data.title,
-        content: data.content,
-        relatedLinks: data.links || [],
-        images: data.images || [],
-        url: extractorUrl!,
-        domain: new URL(extractorUrl!).hostname,
-        accessibility: {
-          ...article.accessibility,
-          hasImages: data.hasImages,
-        },
+
+    if (!data || !extractorUrl) {
+      console.error("Invalid extraction data or URL");
+      return;
+    }
+
+    const newArticle = {
+      ...article,
+      title: data.title || "Untitled",
+      content: data.content || [],
+      relatedLinks: data.links || [],
+      images: data.images || [],
+      url: extractorUrl,
+      domain: new URL(extractorUrl).hostname,
+      accessibility: {
+        ...article.accessibility,
+        hasImages: Boolean(data.hasImages),
       },
-    });
+    };
+
+    navigation.push("Reader", { article: newArticle });
   };
 
   const handleError = () => {
     setLoading(false);
     setExtractorUrl(null);
-    // TODO: Show error message
+    console.error("Content extraction failed");
   };
 
   const handleImagePress = (image: ExtractedImage) => {
@@ -67,6 +73,13 @@ export const ReaderScreen = () => {
     setSelectedImage(null);
   };
 
+  useEffect(() => {
+    return () => {
+      setLoading(false);
+      setExtractorUrl(null);
+    };
+  }, []);
+
   return (
     <SafeAreaView style={styles.safeArea}>
       {extractorUrl && (
@@ -76,14 +89,40 @@ export const ReaderScreen = () => {
           onError={handleError}
         />
       )}
-      <View style={styles.header}>
-        <IconButton
-          icon="arrow-left"
-          size={24}
-          onPress={() => navigation.goBack()}
-          style={styles.backButton}
-        />
-      </View>
+      {!loading && (
+        <>
+          <View style={styles.header}>
+            <IconButton
+              icon="arrow-left"
+              size={24}
+              onPress={() => navigation.goBack()}
+              style={styles.backButton}
+            />
+            <View style={styles.headerContent}>
+              <Text style={styles.headerTitle} numberOfLines={1}>
+                {article.title}
+              </Text>
+              <Text style={styles.headerUrl} numberOfLines={1}>
+                {article.domain}
+              </Text>
+            </View>
+            <IconButton
+              icon="home"
+              size={24}
+              onPress={() => navigation.popToTop()}
+              style={styles.menuButton}
+            />
+          </View>
+          <View style={styles.fixedMenu}>
+            <IconButton
+              icon="magnify"
+              size={24}
+              onPress={() => navigation.popToTop()}
+              style={styles.menuButton}
+            />
+          </View>
+        </>
+      )}
       <ScrollView
         style={styles.scrollView}
         contentInsetAdjustmentBehavior="automatic"
@@ -144,9 +183,11 @@ const styles = StyleSheet.create({
     padding: 8,
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
+    alignItems: "center",
   },
   scrollView: {
     flex: 1,
+    marginTop: 10,
   },
   backButton: {
     margin: -8,
@@ -166,9 +207,37 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
   },
   loadingText: {
-    marginTop: 10,
+    marginTop: 16,
+    fontSize: 16,
+    color: "#666",
+  },
+  headerContent: {
+    flex: 1,
+    marginLeft: 8,
+  },
+  headerTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#000",
+  },
+  headerUrl: {
+    fontSize: 12,
+    color: "#666",
+    marginTop: 2,
+  },
+  menuButton: {
+    margin: -8,
+    marginRight: 10,
+  },
+  fixedMenu: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingHorizontal: 8,
+    paddingVertical: 10,
+    backgroundColor: "#fff",
+    borderBottomWidth: 1,
+    borderBottomColor: "#eee",
   },
 });

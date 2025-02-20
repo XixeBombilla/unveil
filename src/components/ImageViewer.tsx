@@ -78,5 +78,7 @@ const styles = StyleSheet.create({
   caption: {
     color: "white",
     textAlign: "center",
+    fontSize: 16,
+    fontWeight: "500",
   },
 });

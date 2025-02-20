@@ -40,7 +40,7 @@ export const LibraryScreen = () => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         {articles.length === 0 ? (
-          <Text style={styles.emptyText}>No saved articles yet</Text>
+          <Text style={styles.emptyText}>No saved pages yet</Text>
         ) : (
           <FlatList
             data={articles}

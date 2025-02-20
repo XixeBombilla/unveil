@@ -3,7 +3,7 @@ import { Article } from "./content";
 export type RootStackParamList = {
   Library: undefined;
   Reader: { article: Article };
-  URLInput: undefined;
+  Unveil: undefined;
   AccessibilitySettings: undefined;
 };
 

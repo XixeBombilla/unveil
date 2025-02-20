@@ -21,7 +21,7 @@ function MainTabs() {
       }}
     >
       <Tab.Screen
-        name="Read"
+        name="Unveil"
         component={URLInputScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
