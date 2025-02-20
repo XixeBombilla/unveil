@@ -4,7 +4,7 @@ import { AccessibleReader } from "../components/AccessibleReader";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../types/navigation";
-import { Article } from "../types/content";
+import { Article, ExtractedImage } from "../types/content";
 import { defaultPreferences } from "../types/preferences";
 import {
   IconButton,
@@ -14,6 +14,8 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 import { ContentExtractor } from "../components/ContentExtractor";
+import { ImageGallery } from "../components/ImageGallery";
+import { ImageViewer } from "../components/ImageViewer";
 
 export const ReaderScreen = () => {
   const route = useRoute();
@@ -22,6 +24,9 @@ export const ReaderScreen = () => {
   const { article } = route.params as { article: Article };
   const [loading, setLoading] = useState(false);
   const [extractorUrl, setExtractorUrl] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<ExtractedImage | null>(
+    null
+  );
 
   const handleLinkPress = (url: string) => {
     setLoading(true);
@@ -37,6 +42,7 @@ export const ReaderScreen = () => {
         title: data.title,
         content: data.content,
         relatedLinks: data.links || [],
+        images: data.images || [],
         url: extractorUrl!,
         domain: new URL(extractorUrl!).hostname,
         accessibility: {
@@ -51,6 +57,14 @@ export const ReaderScreen = () => {
     setLoading(false);
     setExtractorUrl(null);
     // TODO: Show error message
+  };
+
+  const handleImagePress = (image: ExtractedImage) => {
+    setSelectedImage(image);
+  };
+
+  const handleCloseViewer = () => {
+    setSelectedImage(null);
   };
 
   return (
@@ -87,6 +101,12 @@ export const ReaderScreen = () => {
               preferences={article.userPreferences || defaultPreferences}
             />
 
+            <ImageGallery
+              images={article.images}
+              preferences={article.userPreferences || defaultPreferences}
+              onImagePress={handleImagePress}
+            />
+
             {article.relatedLinks.length > 0 && (
               <View style={styles.linksSection}>
                 <Divider style={styles.divider} />
@@ -105,6 +125,11 @@ export const ReaderScreen = () => {
           </>
         )}
       </ScrollView>
+      <ImageViewer
+        image={selectedImage}
+        visible={selectedImage !== null}
+        onClose={handleCloseViewer}
+      />
     </SafeAreaView>
   );
 };
