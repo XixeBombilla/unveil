@@ -1,95 +1,48 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Image, ActivityIndicator } from "react-native";
+import React from "react";
+import { View, StyleSheet } from "react-native";
 import { useAccessibilityInfo } from "@react-native-community/hooks";
-import { Text, IconButton } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { UserPreferences } from "../types/preferences";
 import { ContentNode } from "../types/content";
+import { getThemeColors } from "../utils/theme";
+import { ThemeColors } from "../types/theme";
 
 interface AccessibleReaderProps {
   content: ContentNode[];
   preferences: UserPreferences;
+  themeColors: ThemeColors;
 }
-
-interface ImageContentProps {
-  node: ContentNode;
-  preferences: UserPreferences;
-}
-
-const ImageContent: React.FC<ImageContentProps> = ({ node, preferences }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [hasError, setHasError] = useState(false);
-  const { screenReaderEnabled } = useAccessibilityInfo();
-
-  if (preferences.removeImages) return null;
-
-  if (screenReaderEnabled) {
-    return node.accessibility.alt ? (
-      <Text style={styles.screenReaderImageText}>
-        {node.isBackground ? "Background Image: " : "Image: "}
-        {node.accessibility.alt}
-      </Text>
-    ) : null;
-  }
-
-  return (
-    <View key={node.id} style={styles.imageContainer}>
-      <View
-        style={[
-          styles.imageWrapper,
-          node.isBackground && styles.backgroundImage,
-        ]}
-      >
-        {isLoading && (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" />
-          </View>
-        )}
-        {hasError ? (
-          <View style={styles.errorContainer}>
-            <IconButton icon="alert" size={24} />
-            <Text style={styles.errorText}>Failed to load image</Text>
-          </View>
-        ) : (
-          <Image
-            source={{ uri: node.imageUrl }}
-            style={[
-              styles.image,
-              node.isBackground && styles.backgroundImageStyle,
-            ]}
-            accessibilityLabel={node.accessibility.label}
-            accessible={true}
-            onLoadStart={() => setIsLoading(true)}
-            onLoadEnd={() => setIsLoading(false)}
-            onError={() => {
-              setHasError(true);
-              setIsLoading(false);
-            }}
-          />
-        )}
-      </View>
-      {node.accessibility.alt && !node.isBackground && (
-        <Text style={styles.imageCaption}>{node.accessibility.alt}</Text>
-      )}
-    </View>
-  );
-};
 
 export const AccessibleReader: React.FC<AccessibleReaderProps> = ({
   content,
   preferences,
+  themeColors,
 }) => {
   const { screenReaderEnabled } = useAccessibilityInfo();
 
+  const getTextStyles = (preferences: UserPreferences) => ({
+    fontSize: preferences.fontSize,
+    fontFamily: preferences.fontFamily,
+    lineHeight: preferences.lineHeight * preferences.fontSize,
+    letterSpacing: preferences.letterSpacing,
+    color: themeColors.text,
+  });
+
   const renderContent = (node: ContentNode) => {
-    // Skip image nodes - they'll be shown in ImageGallery
     if (node.type === "image") return null;
+
+    const themeColors = getThemeColors(preferences);
+    const textStyle = {
+      ...getTextStyles(preferences),
+      color: themeColors.text,
+    };
 
     switch (node.type) {
       case "heading":
         return (
           <Text
             key={node.id}
-            style={[styles.heading, getTextStyles(preferences)]}
+            style={[styles.heading, textStyle]}
             accessibilityLabel={node.accessibility.label}
             accessibilityRole={screenReaderEnabled ? "header" : undefined}
             accessible={screenReaderEnabled}
@@ -101,7 +54,7 @@ export const AccessibleReader: React.FC<AccessibleReaderProps> = ({
         return (
           <Text
             key={node.id}
-            style={[styles.paragraph, getTextStyles(preferences)]}
+            style={[styles.paragraph, textStyle]}
             accessibilityLabel={node.accessibility.label}
           >
             {node.content}
@@ -115,9 +68,7 @@ export const AccessibleReader: React.FC<AccessibleReaderProps> = ({
       style={[
         styles.container,
         {
-          backgroundColor: preferences.useCustomColors.enabled
-            ? preferences.useCustomColors.backgroundColor
-            : "#FFFFFF",
+          backgroundColor: themeColors.background,
         },
       ]}
       accessibilityRole="text"
@@ -126,16 +77,6 @@ export const AccessibleReader: React.FC<AccessibleReaderProps> = ({
     </View>
   );
 };
-
-const getTextStyles = (preferences: UserPreferences) => ({
-  fontSize: preferences.fontSize,
-  fontFamily: preferences.fontFamily,
-  lineHeight: preferences.lineHeight * preferences.fontSize,
-  letterSpacing: preferences.letterSpacing,
-  color: preferences.useCustomColors.enabled
-    ? preferences.useCustomColors.textColor
-    : "#000000",
-});
 
 const styles = StyleSheet.create({
   container: {

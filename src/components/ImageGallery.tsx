@@ -3,6 +3,7 @@ import { View, StyleSheet, ScrollView, Image, Pressable } from "react-native";
 import { Text, IconButton } from "react-native-paper";
 import { ExtractedImage } from "../types/content";
 import { UserPreferences } from "../types/preferences";
+import { getThemeColors } from "../utils/theme";
 
 interface ImageGalleryProps {
   images: ExtractedImage[];
@@ -17,11 +18,22 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({
 }) => {
   if (preferences.removeImages || !images.length) return null;
 
+  const themeColors = getThemeColors(preferences);
+
   return (
-    <View style={styles.container}>
+    <View
+      style={[styles.container, { backgroundColor: themeColors.background }]}
+    >
       <View style={styles.header}>
-        <Text style={styles.title}>Images ({images.length})</Text>
-        <IconButton icon="grid" size={24} />
+        <Text
+          style={[
+            styles.title,
+            { fontSize: preferences.fontSize + 6, color: themeColors.text },
+          ]}
+        >
+          Images ({images.length})
+        </Text>
+        <IconButton icon="grid" size={24} iconColor={themeColors.text} />
       </View>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {images.map((image) => (
@@ -44,7 +56,13 @@ export const ImageGallery: React.FC<ImageGalleryProps> = ({
                 />
               )}
               {image.title && (
-                <Text numberOfLines={2} style={styles.imageTitle}>
+                <Text
+                  numberOfLines={2}
+                  style={[
+                    styles.imageTitle,
+                    { fontSize: preferences.fontSize - 2 },
+                  ]}
+                >
                   {image.title}
                 </Text>
               )}

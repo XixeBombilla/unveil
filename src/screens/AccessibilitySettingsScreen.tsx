@@ -4,34 +4,35 @@ import { List, Switch, Text, Divider } from "react-native-paper";
 import Slider from "@react-native-community/slider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserPreferences, defaultPreferences } from "../types/preferences";
+import { getThemeColors } from "../utils/theme";
+import { usePreferences } from "../context/PreferencesContext";
 
 export const AccessibilitySettingsScreen = () => {
-  const [preferences, setPreferences] = useState<UserPreferences>({
-    ...defaultPreferences,
-  });
+  const { preferences, updatePreferences } = usePreferences();
+  const themeColors = getThemeColors(preferences);
 
   const savePreferences = async (newPreferences: UserPreferences) => {
-    try {
-      await AsyncStorage.setItem(
-        "user_preferences",
-        JSON.stringify(newPreferences)
-      );
-      setPreferences(newPreferences);
-    } catch (error) {
-      console.error("Failed to save preferences:", error);
-    }
+    await updatePreferences(newPreferences);
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <ScrollView style={styles.container}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: themeColors.background }]}
+    >
+      <ScrollView
+        style={[styles.container, { backgroundColor: themeColors.background }]}
+      >
         {/* Text Settings */}
         <List.Section>
-          <List.Subheader>Text Settings</List.Subheader>
+          <List.Subheader style={{ color: themeColors.text }}>
+            Text Settings
+          </List.Subheader>
           <View style={styles.sliderContainer}>
             <View style={styles.sliderHeader}>
-              <Text>Font Size</Text>
-              <Text>{Math.round(preferences.fontSize)}px</Text>
+              <Text style={{ color: themeColors.text }}>Font Size</Text>
+              <Text style={{ color: themeColors.secondary }}>
+                {Math.round(preferences.fontSize)}px
+              </Text>
             </View>
             <Slider
               value={preferences.fontSize}
@@ -44,8 +45,10 @@ export const AccessibilitySettingsScreen = () => {
           </View>
           <View style={styles.sliderContainer}>
             <View style={styles.sliderHeader}>
-              <Text>Line Height</Text>
-              <Text>{Math.round(preferences.lineHeight)}px</Text>
+              <Text style={{ color: themeColors.text }}>Line Height</Text>
+              <Text style={{ color: themeColors.secondary }}>
+                {Math.round(preferences.lineHeight)}px
+              </Text>
             </View>
             <Slider
               value={preferences.lineHeight}
@@ -59,8 +62,10 @@ export const AccessibilitySettingsScreen = () => {
           </View>
           <View style={styles.sliderContainer}>
             <View style={styles.sliderHeader}>
-              <Text>Letter Spacing</Text>
-              <Text>{Math.round(preferences.letterSpacing)}px</Text>
+              <Text style={{ color: themeColors.text }}>Letter Spacing</Text>
+              <Text style={{ color: themeColors.secondary }}>
+                {Math.round(preferences.letterSpacing)}px
+              </Text>
             </View>
             <Slider
               value={preferences.letterSpacing}
@@ -74,20 +79,31 @@ export const AccessibilitySettingsScreen = () => {
           </View>
         </List.Section>
 
-        <Divider />
+        <Divider style={{ backgroundColor: themeColors.border }} />
 
         {/* Visual Settings */}
         <List.Section>
-          <List.Subheader>Visual Settings</List.Subheader>
+          <List.Subheader style={{ color: themeColors.text }}>
+            Visual Settings
+          </List.Subheader>
           <List.Item
-            title="Theme"
-            description={preferences.theme}
-            onPress={() => {
-              // TODO: Add theme picker dialog
-            }}
+            title="Dark Theme"
+            titleStyle={{ color: themeColors.text }}
+            right={() => (
+              <Switch
+                value={preferences.theme === "dark"}
+                onValueChange={(value) =>
+                  savePreferences({
+                    ...preferences,
+                    theme: value ? "dark" : "light",
+                  })
+                }
+              />
+            )}
           />
           <List.Item
             title="Remove Images"
+            titleStyle={{ color: themeColors.text }}
             right={() => (
               <Switch
                 value={preferences.removeImages}
@@ -97,32 +113,18 @@ export const AccessibilitySettingsScreen = () => {
               />
             )}
           />
-          <List.Item
-            title="Use Custom Colors"
-            right={() => (
-              <Switch
-                value={preferences.useCustomColors.enabled}
-                onValueChange={(value) =>
-                  savePreferences({
-                    ...preferences,
-                    useCustomColors: {
-                      ...preferences.useCustomColors,
-                      enabled: value,
-                    },
-                  })
-                }
-              />
-            )}
-          />
         </List.Section>
 
-        <Divider />
+        <Divider style={{ backgroundColor: themeColors.border }} />
 
         {/* Content Settings */}
         <List.Section>
-          <List.Subheader>Content Settings</List.Subheader>
+          <List.Subheader style={{ color: themeColors.text }}>
+            Content Settings
+          </List.Subheader>
           <List.Item
             title="Simplify Text"
+            titleStyle={{ color: themeColors.text }}
             right={() => (
               <Switch
                 value={preferences.simplifyText}
@@ -134,20 +136,25 @@ export const AccessibilitySettingsScreen = () => {
           />
           <List.Item
             title="Reading Level"
+            titleStyle={{ color: themeColors.text }}
             description={preferences.readingLevel}
+            descriptionStyle={{ color: themeColors.secondary }}
             onPress={() => {
               // TODO: Add reading level picker dialog
             }}
           />
         </List.Section>
 
-        <Divider />
+        <Divider style={{ backgroundColor: themeColors.border }} />
 
         {/* Speech Settings */}
         <List.Section>
-          <List.Subheader>Speech Settings</List.Subheader>
+          <List.Subheader style={{ color: themeColors.text }}>
+            Speech Settings
+          </List.Subheader>
           <List.Item
             title="Enable Text-to-Speech"
+            titleStyle={{ color: themeColors.text }}
             right={() => (
               <Switch
                 value={preferences.speech.enabled}
@@ -161,7 +168,7 @@ export const AccessibilitySettingsScreen = () => {
             )}
           />
           <View style={styles.sliderContainer}>
-            <Text>Speech Rate</Text>
+            <Text style={{ color: themeColors.text }}>Speech Rate</Text>
             <Slider
               value={preferences.speech.rate}
               onValueChange={(value) =>
@@ -177,13 +184,16 @@ export const AccessibilitySettingsScreen = () => {
           </View>
         </List.Section>
 
-        <Divider />
+        <Divider style={{ backgroundColor: themeColors.border }} />
 
         {/* Focus Settings */}
         <List.Section>
-          <List.Subheader>Focus Assistance</List.Subheader>
+          <List.Subheader style={{ color: themeColors.text }}>
+            Focus Assistance
+          </List.Subheader>
           <List.Item
             title="Highlight Current Line"
+            titleStyle={{ color: themeColors.text }}
             right={() => (
               <Switch
                 value={preferences.focus.highlightCurrentLine}
@@ -201,6 +211,7 @@ export const AccessibilitySettingsScreen = () => {
           />
           <List.Item
             title="Reading Guide"
+            titleStyle={{ color: themeColors.text }}
             right={() => (
               <Switch
                 value={preferences.focus.readingGuide}
@@ -215,13 +226,16 @@ export const AccessibilitySettingsScreen = () => {
           />
         </List.Section>
 
-        <Divider />
+        <Divider style={{ backgroundColor: themeColors.border }} />
 
         {/* Motion Settings */}
         <List.Section>
-          <List.Subheader>Motion Settings</List.Subheader>
+          <List.Subheader style={{ color: themeColors.text }}>
+            Motion Settings
+          </List.Subheader>
           <List.Item
             title="Reduce Motion"
+            titleStyle={{ color: themeColors.text }}
             right={() => (
               <Switch
                 value={preferences.motion.reduceMotion}
@@ -236,6 +250,7 @@ export const AccessibilitySettingsScreen = () => {
           />
           <List.Item
             title="Auto-Scroll"
+            titleStyle={{ color: themeColors.text }}
             right={() => (
               <Switch
                 value={preferences.motion.autoScroll.enabled}
@@ -256,7 +271,7 @@ export const AccessibilitySettingsScreen = () => {
           />
           {preferences.motion.autoScroll.enabled && (
             <View style={styles.sliderContainer}>
-              <Text>Scroll Speed</Text>
+              <Text style={{ color: themeColors.text }}>Scroll Speed</Text>
               <Slider
                 value={preferences.motion.autoScroll.speed}
                 onValueChange={(value) =>
@@ -286,7 +301,6 @@ export const AccessibilitySettingsScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   container: {
     flex: 1,
@@ -300,3 +314,5 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 });
+
+export default AccessibilitySettingsScreen;

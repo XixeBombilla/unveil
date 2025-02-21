@@ -5,7 +5,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import type { RootStackParamList } from "../types/navigation";
 import { Article, ExtractedImage } from "../types/content";
-import { defaultPreferences } from "../types/preferences";
+import { usePreferences } from "../context/PreferencesContext";
 import {
   IconButton,
   List,
@@ -16,6 +16,8 @@ import {
 import { ContentExtractor } from "../components/ContentExtractor";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageViewer } from "../components/ImageViewer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getThemeColors } from "../utils/theme";
 
 export const ReaderScreen = () => {
   const route = useRoute();
@@ -27,6 +29,9 @@ export const ReaderScreen = () => {
   const [selectedImage, setSelectedImage] = useState<ExtractedImage | null>(
     null
   );
+
+  const { preferences } = usePreferences();
+  const themeColors = getThemeColors(preferences);
 
   const handleLinkPress = (url: string) => {
     setLoading(true);
@@ -81,7 +86,9 @@ export const ReaderScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: themeColors.background }]}
+    >
       {extractorUrl && (
         <ContentExtractor
           url={extractorUrl}
@@ -91,32 +98,57 @@ export const ReaderScreen = () => {
       )}
       {!loading && (
         <>
-          <View style={styles.header}>
+          <View
+            style={[
+              styles.header,
+              {
+                backgroundColor: themeColors.background,
+                borderBottomColor: themeColors.border,
+              },
+            ]}
+          >
             <IconButton
               icon="arrow-left"
               size={24}
+              iconColor={themeColors.text}
               onPress={() => navigation.goBack()}
               style={styles.backButton}
             />
             <View style={styles.headerContent}>
-              <Text style={styles.headerTitle} numberOfLines={1}>
+              <Text
+                style={[styles.headerTitle, { color: themeColors.text }]}
+                numberOfLines={1}
+              >
                 {article.title}
               </Text>
-              <Text style={styles.headerUrl} numberOfLines={1}>
+              <Text
+                style={[styles.headerUrl, { color: themeColors.secondary }]}
+                numberOfLines={1}
+              >
                 {article.domain}
               </Text>
             </View>
             <IconButton
               icon="home"
               size={24}
+              iconColor={themeColors.text}
               onPress={() => navigation.popToTop()}
               style={styles.menuButton}
             />
           </View>
-          <View style={styles.fixedMenu}>
+          <View
+            style={[
+              styles.fixedMenu,
+              {
+                backgroundColor: themeColors.surface,
+                borderBottomColor: themeColors.border,
+              },
+            ]}
+          >
             <IconButton
               icon="magnify"
               size={24}
+              iconColor={themeColors.text}
               onPress={() => navigation.popToTop()}
               style={styles.menuButton}
             />
@@ -130,31 +162,52 @@ export const ReaderScreen = () => {
       >
         {loading ? (
           <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" />
-            <Text style={styles.loadingText}>Loading content...</Text>
+            <ActivityIndicator size="large" color={themeColors.text} />
+            <Text style={[styles.loadingText, { color: themeColors.text }]}>
+              Loading content...
+            </Text>
           </View>
         ) : (
           <>
             <AccessibleReader
               content={article.content}
-              preferences={article.userPreferences || defaultPreferences}
+              preferences={preferences}
+              themeColors={themeColors}
             />
 
             <ImageGallery
               images={article.images}
-              preferences={article.userPreferences || defaultPreferences}
+              preferences={preferences}
               onImagePress={handleImagePress}
             />
 
             {article.relatedLinks.length > 0 && (
               <View style={styles.linksSection}>
                 <Divider style={styles.divider} />
-                <Text style={styles.linksSectionTitle}>Related Links</Text>
+                <Text
+                  style={[
+                    styles.linksSectionTitle,
+                    {
+                      fontSize: preferences.fontSize + 4,
+                      color: themeColors.text,
+                    },
+                  ]}
+                >
+                  Related Links
+                </Text>
                 {article.relatedLinks.map((link) => (
                   <List.Item
                     key={link.id}
                     title={link.title}
                     description={link.url}
+                    titleStyle={{
+                      fontSize: preferences.fontSize,
+                      color: themeColors.text,
+                    }}
+                    descriptionStyle={{
+                      fontSize: preferences.fontSize - 2,
+                      color: themeColors.secondary,
+                    }}
                     onPress={() => handleLinkPress(link.url)}
                     left={(props) => <List.Icon {...props} icon="link" />}
                   />

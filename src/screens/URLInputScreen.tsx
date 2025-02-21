@@ -4,12 +4,16 @@ import { TextInput, Button, Text } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { createArticle } from "../services/contentExtraction";
 import { ContentExtractor } from "../components/ContentExtractor";
+import { usePreferences } from "../context/PreferencesContext";
+import { getThemeColors } from "../utils/theme";
 
 export const URLInputScreen = () => {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [showExtractor, setShowExtractor] = useState(false);
   const navigation = useNavigation();
+  const { preferences } = usePreferences();
+  const themeColors = getThemeColors(preferences);
 
   const handleUrlSubmit = () => {
     if (!url) return;
@@ -32,8 +36,12 @@ export const URLInputScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+    <SafeAreaView
+      style={[styles.safeArea, { backgroundColor: themeColors.background }]}
+    >
+      <View
+        style={[styles.container, { backgroundColor: themeColors.background }]}
+      >
         {showExtractor && (
           <ContentExtractor
             url={url}
@@ -41,7 +49,9 @@ export const URLInputScreen = () => {
             onError={handleError}
           />
         )}
-        <Text style={styles.title}>Enter a URL to read</Text>
+        <Text style={[styles.title, { color: themeColors.text }]}>
+          Enter a URL to read
+        </Text>
         <TextInput
           mode="outlined"
           label="Website URL"
@@ -50,14 +60,29 @@ export const URLInputScreen = () => {
           autoCapitalize="none"
           autoCorrect={false}
           keyboardType="url"
-          style={styles.input}
+          textColor={themeColors.text}
+          style={[
+            styles.input,
+            {
+              borderColor: themeColors.border,
+              backgroundColor: themeColors.inputBackground,
+            },
+          ]}
+          placeholder="Enter the URL here"
+          placeholderTextColor={themeColors.secondary}
+          theme={{
+            colors: {
+              primary: themeColors.text,
+            },
+          }}
         />
         <Button
           mode="contained"
           onPress={handleUrlSubmit}
           loading={loading}
           disabled={loading || !url}
-          style={styles.button}
+          style={[styles.button, { backgroundColor: themeColors.text }]}
+          labelStyle={{ color: themeColors.background }}
         >
           Unveil Page
         </Button>
@@ -69,7 +94,6 @@ export const URLInputScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   container: {
     flex: 1,

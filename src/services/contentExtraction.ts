@@ -2,8 +2,6 @@ import { Article } from "../types/content";
 
 export const EXTRACTION_SCRIPT = `
 (function() {
-  console.log('Script started');
-  
   function waitForElement(selector, timeout = 2000) {
     return new Promise((resolve, reject) => {
       if (document.querySelector(selector)) {
@@ -45,15 +43,11 @@ export const EXTRACTION_SCRIPT = `
   }
 
   async function extractContent() {
-    console.log('Extracting content...');
     const content = [];
     const links = [];
     const images = [];
     const title = document.title;
-    console.log('Title:', title);
-    
     const mainContent = await waitForElement('article, main, .article, .post, .content, #content');
-    console.log('Using container:', mainContent.tagName);
     
     // Extract regular images
     const allImages = mainContent.querySelectorAll('img');
@@ -107,8 +101,6 @@ export const EXTRACTION_SCRIPT = `
 
     // Extract text and images in order of appearance
     const elements = mainContent.querySelectorAll('h1, h2, h3, h4, h5, h6, p, img');
-    console.log('Found elements:', elements.length);
-    
     elements.forEach((el, index) => {
       if (el.tagName.toLowerCase() === 'img') {
         const imageUrl = el.src;
@@ -151,10 +143,6 @@ export const EXTRACTION_SCRIPT = `
         });
       }
     });
-
-    console.log('Extracted content:', content);
-    console.log('Extracted links:', links);
-    console.log('Extracted images:', images);
     
     return {
       title,
@@ -222,7 +210,6 @@ export interface ExtractedImage {
 }
 
 export const createArticle = (extractedData: any, url: string): Article => {
-  console.log("extractedData", extractedData);
   return {
     id: Date.now().toString(),
     url,
