@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     fontWeight: "bold",
+    fontFamily: "AtkinsonHyperlegible-Regular",
   },
   imageContainer: {
     width: 200,

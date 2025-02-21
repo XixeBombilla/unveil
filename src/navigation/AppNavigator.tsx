@@ -33,7 +33,7 @@ function MainTabs() {
     <Tab.Navigator
       screenOptions={{
         tabBarAccessibilityLabel: "Main navigation",
-        tabBarActiveTintColor: "#007AFF",
+        tabBarActiveTintColor: themeColors.tint,
         tabBarStyle: {
           backgroundColor: themeColors.background,
         },
@@ -43,7 +43,7 @@ function MainTabs() {
         name="Unveil"
         component={URLInputScreen}
         options={{
-          ...commonOptions,
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons
               name="chrome-reader-mode"

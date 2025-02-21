@@ -41,6 +41,8 @@ export const AccessibilitySettingsScreen = () => {
               }
               minimumValue={12}
               maximumValue={32}
+              minimumTrackTintColor={themeColors.tint}
+              maximumTrackTintColor={themeColors.border}
             />
           </View>
           <View style={styles.sliderContainer}>
@@ -58,6 +60,8 @@ export const AccessibilitySettingsScreen = () => {
               minimumValue={1}
               maximumValue={2}
               step={0.1}
+              minimumTrackTintColor={themeColors.tint}
+              maximumTrackTintColor={themeColors.border}
             />
           </View>
           <View style={styles.sliderContainer}>
@@ -75,6 +79,8 @@ export const AccessibilitySettingsScreen = () => {
               minimumValue={0}
               maximumValue={5}
               step={0.5}
+              minimumTrackTintColor="#00796B"
+              maximumTrackTintColor={themeColors.border}
             />
           </View>
         </List.Section>
@@ -98,6 +104,10 @@ export const AccessibilitySettingsScreen = () => {
                     theme: value ? "dark" : "light",
                   })
                 }
+                trackColor={{
+                  false: themeColors.border,
+                  true: themeColors.tint,
+                }}
               />
             )}
           />
@@ -110,6 +120,10 @@ export const AccessibilitySettingsScreen = () => {
                 onValueChange={(value) =>
                   savePreferences({ ...preferences, removeImages: value })
                 }
+                trackColor={{
+                  false: themeColors.border,
+                  true: themeColors.tint,
+                }}
               />
             )}
           />
@@ -131,6 +145,10 @@ export const AccessibilitySettingsScreen = () => {
                 onValueChange={(value) =>
                   savePreferences({ ...preferences, simplifyText: value })
                 }
+                trackColor={{
+                  false: themeColors.border,
+                  true: themeColors.tint,
+                }}
               />
             )}
           />
@@ -164,6 +182,10 @@ export const AccessibilitySettingsScreen = () => {
                     speech: { ...preferences.speech, enabled: value },
                   })
                 }
+                trackColor={{
+                  false: themeColors.border,
+                  true: themeColors.tint,
+                }}
               />
             )}
           />
@@ -206,6 +228,10 @@ export const AccessibilitySettingsScreen = () => {
                     },
                   })
                 }
+                trackColor={{
+                  false: themeColors.border,
+                  true: themeColors.tint,
+                }}
               />
             )}
           />
@@ -221,6 +247,10 @@ export const AccessibilitySettingsScreen = () => {
                     focus: { ...preferences.focus, readingGuide: value },
                   })
                 }
+                trackColor={{
+                  false: themeColors.border,
+                  true: themeColors.tint,
+                }}
               />
             )}
           />
@@ -245,6 +275,10 @@ export const AccessibilitySettingsScreen = () => {
                     motion: { ...preferences.motion, reduceMotion: value },
                   })
                 }
+                trackColor={{
+                  false: themeColors.border,
+                  true: themeColors.tint,
+                }}
               />
             )}
           />
@@ -304,6 +338,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    fontFamily: "AtkinsonHyperlegible-Regular",
   },
   sliderContainer: {
     padding: 16,

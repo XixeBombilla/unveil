@@ -22,7 +22,7 @@ export const AccessibleReader: React.FC<AccessibleReaderProps> = ({
 
   const getTextStyles = (preferences: UserPreferences) => ({
     fontSize: preferences.fontSize,
-    fontFamily: preferences.fontFamily,
+    fontFamily: "AtkinsonHyperlegible-Regular",
     lineHeight: preferences.lineHeight * preferences.fontSize,
     letterSpacing: preferences.letterSpacing,
     color: themeColors.text,

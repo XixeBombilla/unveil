@@ -80,5 +80,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 20,
     opacity: 0.5,
+    fontFamily: "AtkinsonHyperlegible-Regular",
   },
 });

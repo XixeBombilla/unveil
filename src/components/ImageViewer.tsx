@@ -76,6 +76,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   caption: {
+    fontFamily: "AtkinsonHyperlegible-Regular",
     color: "white",
     textAlign: "center",
     fontSize: 16,

@@ -175,11 +175,13 @@ export const ReaderScreen = () => {
               themeColors={themeColors}
             />
 
-            <ImageGallery
-              images={article.images}
-              preferences={preferences}
-              onImagePress={handleImagePress}
-            />
+            {!preferences.removeImages && (
+              <ImageGallery
+                images={article.images}
+                preferences={preferences}
+                onImagePress={handleImagePress}
+              />
+            )}
 
             {article.relatedLinks.length > 0 && (
               <View style={styles.linksSection}>
@@ -203,10 +205,12 @@ export const ReaderScreen = () => {
                     titleStyle={{
                       fontSize: preferences.fontSize,
                       color: themeColors.text,
+                      fontFamily: "AtkinsonHyperlegible-Regular",
                     }}
                     descriptionStyle={{
                       fontSize: preferences.fontSize - 2,
                       color: themeColors.secondary,
+                      fontFamily: "AtkinsonHyperlegible-Regular",
                     }}
                     onPress={() => handleLinkPress(link.url)}
                     left={(props) => <List.Icon {...props} icon="link" />}
@@ -237,6 +241,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#eee",
     alignItems: "center",
+    fontFamily: "AtkinsonHyperlegible-Regular",
   },
   scrollView: {
     flex: 1,
@@ -252,6 +257,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 16,
+    fontFamily: "AtkinsonHyperlegible-Regular",
   },
   divider: {
     marginVertical: 16,
@@ -274,6 +280,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     color: "#000",
+    fontFamily: "AtkinsonHyperlegible-Regular",
   },
   headerUrl: {
     fontSize: 12,

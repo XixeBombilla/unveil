@@ -49,9 +49,7 @@ export const URLInputScreen = () => {
             onError={handleError}
           />
         )}
-        <Text style={[styles.title, { color: themeColors.text }]}>
-          Enter a URL to read
-        </Text>
+        <Text style={[styles.title, { color: themeColors.text }]}>Unveil</Text>
         <TextInput
           mode="outlined"
           label="Website URL"
@@ -98,16 +96,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    flexDirection: "column",
+    justifyContent: "center",
   },
   title: {
     fontSize: 24,
     marginBottom: 20,
     textAlign: "center",
+    fontFamily: "AtkinsonHyperlegible-Regular",
   },
   input: {
     marginBottom: 16,
+    fontFamily: "AtkinsonHyperlegible-Regular",
   },
   button: {
     marginTop: 8,
+    fontFamily: "AtkinsonHyperlegible-Regular",
   },
 });
