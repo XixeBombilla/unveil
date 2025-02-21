@@ -132,7 +132,7 @@ export const AccessibilitySettingsScreen = () => {
         <Divider style={{ backgroundColor: themeColors.border }} />
 
         {/* Content Settings */}
-        <List.Section>
+        {/* <List.Section>
           <List.Subheader style={{ color: themeColors.text }}>
             Content Settings
           </List.Subheader>
@@ -161,12 +161,12 @@ export const AccessibilitySettingsScreen = () => {
               // TODO: Add reading level picker dialog
             }}
           />
-        </List.Section>
+        </List.Section> */}
 
-        <Divider style={{ backgroundColor: themeColors.border }} />
+        {/* <Divider style={{ backgroundColor: themeColors.border }} /> */}
 
         {/* Speech Settings */}
-        <List.Section>
+        {/* <List.Section>
           <List.Subheader style={{ color: themeColors.text }}>
             Speech Settings
           </List.Subheader>
@@ -206,10 +206,10 @@ export const AccessibilitySettingsScreen = () => {
           </View>
         </List.Section>
 
-        <Divider style={{ backgroundColor: themeColors.border }} />
+        <Divider style={{ backgroundColor: themeColors.border }} /> */}
 
         {/* Focus Settings */}
-        <List.Section>
+        {/* <List.Section>
           <List.Subheader style={{ color: themeColors.text }}>
             Focus Assistance
           </List.Subheader>
@@ -254,12 +254,12 @@ export const AccessibilitySettingsScreen = () => {
               />
             )}
           />
-        </List.Section>
+        </List.Section> */}
 
-        <Divider style={{ backgroundColor: themeColors.border }} />
+        {/* <Divider style={{ backgroundColor: themeColors.border }} /> */}
 
         {/* Motion Settings */}
-        <List.Section>
+        {/* <List.Section>
           <List.Subheader style={{ color: themeColors.text }}>
             Motion Settings
           </List.Subheader>
@@ -326,7 +326,7 @@ export const AccessibilitySettingsScreen = () => {
               />
             </View>
           )}
-        </List.Section>
+        </List.Section> */}
       </ScrollView>
     </SafeAreaView>
   );
