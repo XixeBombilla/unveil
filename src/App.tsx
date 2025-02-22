@@ -4,9 +4,11 @@ import AppNavigator from "./navigation/AppNavigator";
 
 const App = () => {
   return (
-    <PreferencesProvider>
-      <AppNavigator />
-    </PreferencesProvider>
+    <>
+      <PreferencesProvider>
+        <AppNavigator />
+      </PreferencesProvider>
+    </>
   );
 };
 

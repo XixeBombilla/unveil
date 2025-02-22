@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, ScrollView, StyleSheet, SafeAreaView } from "react-native";
 import { List, Switch, Text, Divider } from "react-native-paper";
 import Slider from "@react-native-community/slider";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserPreferences, defaultPreferences } from "../types/preferences";
 import { getThemeColors } from "../utils/theme";
 import { usePreferences } from "../context/PreferencesContext";
@@ -81,7 +80,7 @@ export const AccessibilitySettingsScreen = () => {
               minimumValue={0}
               maximumValue={5}
               step={0.5}
-              minimumTrackTintColor="#00796B"
+              minimumTrackTintColor={themeColors.tint}
               maximumTrackTintColor={themeColors.border}
             />
           </View>

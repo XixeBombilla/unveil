@@ -69,4 +69,5 @@ export interface Article {
   savedAt: string;
   relatedLinks: ExtractedLink[];
   images: ExtractedImage[];
+  saved?: boolean;
 }

@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet, SafeAreaView, ScrollView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  SafeAreaView,
+  ScrollView,
+  Alert,
+} from "react-native";
 import { AccessibleReader } from "../components/AccessibleReader";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -19,6 +25,7 @@ import { ImageViewer } from "../components/ImageViewer";
 import { getThemeColors } from "../utils/theme";
 // icons
 import IconUnveil from "../components/IconSvg";
+import { saveArticle, getSavedArticles } from "../services/articleStorage";
 
 export const ReaderScreen = () => {
   const route = useRoute();
@@ -30,9 +37,26 @@ export const ReaderScreen = () => {
   const [selectedImage, setSelectedImage] = useState<ExtractedImage | null>(
     null
   );
+  const [isSaved, setIsSaved] = useState(false);
 
   const { preferences } = usePreferences();
   const themeColors = getThemeColors(preferences);
+
+  const checkIfSaved = async () => {
+    const savedArticles = await getSavedArticles();
+    return savedArticles.some(
+      (savedArticle: Article) => savedArticle.id === article.id
+    );
+  };
+
+  useEffect(() => {
+    const loadSavedStatus = async () => {
+      const alreadySaved = await checkIfSaved();
+      setIsSaved(alreadySaved);
+    };
+
+    loadSavedStatus();
+  }, [article.id]);
 
   const handleLinkPress = (url: string) => {
     setLoading(true);
@@ -77,6 +101,13 @@ export const ReaderScreen = () => {
 
   const handleCloseViewer = () => {
     setSelectedImage(null);
+  };
+
+  const handleSaveArticle = async () => {
+    if (await checkIfSaved()) return;
+
+    await saveArticle(article);
+    setIsSaved(true);
   };
 
   useEffect(() => {
@@ -148,11 +179,10 @@ export const ReaderScreen = () => {
             ]}
           >
             <IconButton
-              icon="bookmark-outline"
+              icon={isSaved ? "bookmark" : "bookmark-outline"}
               size={24}
               iconColor={themeColors.text}
-              onPress={() => navigation.popToTop()}
-              style={styles.menuButton}
+              onPress={handleSaveArticle}
             />
           </View>
         </>

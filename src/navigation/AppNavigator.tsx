@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import { StatusBar } from "react-native";
 import { ReaderScreen } from "../screens/ReaderScreen";
 import { LibraryScreen } from "../screens/LibraryScreen";
 import AccessibilitySettingsScreen from "../screens/AccessibilitySettingsScreen";
@@ -39,7 +39,7 @@ function MainTabs() {
           backgroundColor: themeColors.safeAreaBackground,
         },
         tabBarItemStyle: {
-          padding: 10, // Added padding to the icons
+          padding: 10,
         },
       }}
     >
@@ -87,41 +87,49 @@ const AppNavigator = () => {
   const themeColors = getThemeColors(preferences);
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{
-          headerStyle: {
-            backgroundColor: themeColors.background,
-          },
-          headerTintColor: themeColors.text,
-          headerTitleStyle: {
-            color: themeColors.text,
-          },
-        }}
-      >
-        <Stack.Screen
-          name="Main"
-          component={MainTabs}
-          options={{
-            headerShown: false,
+    <>
+      <StatusBar
+        barStyle={
+          preferences.theme === "dark" ? "light-content" : "dark-content"
+        }
+        backgroundColor={themeColors.background}
+      />
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: themeColors.background,
+            },
+            headerTintColor: themeColors.text,
+            headerTitleStyle: {
+              color: themeColors.text,
+            },
           }}
-        />
-        <Stack.Screen
-          name="Reader"
-          component={ReaderScreen}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="AccessibilitySettings"
-          component={AccessibilitySettingsScreen}
-          options={{
-            headerShown: true,
-          }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+        >
+          <Stack.Screen
+            name="Main"
+            component={MainTabs}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="Reader"
+            component={ReaderScreen}
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="AccessibilitySettings"
+            component={AccessibilitySettingsScreen}
+            options={{
+              headerShown: true,
+            }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
 
