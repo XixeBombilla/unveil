@@ -1,2 +1,35 @@
-# unveil
-Unveil is an AI-powered accessibility tool that simplifies websites into clear, readable, and accessible formats. By removing unnecessary clutter and optimizing content for users with disabilities, Unveil enhances readability and navigation, ensuring a seamless browsing experience for everyone.
+# Unveil
+
+![Unveil Logo](./src/assets/images/logo-dark.png)
+
+Unveil is an application that allows users to save and read articles with accessibility features.
+
+## Features
+
+- Save articles for later reading
+- Accessibility options for better reading experience
+- Dark and light themes
+
+## Installation
+
+To install the project, run:
+
+```bash
+npm install
+```
+
+## Usage
+
+To start the application, run:
+
+```bash
+npm start
+```
+
+## Contributing
+
+To contribute to the project, please fork the repository and create a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
