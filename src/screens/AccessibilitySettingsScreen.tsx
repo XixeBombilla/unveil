@@ -169,8 +169,10 @@ export const AccessibilitySettingsScreen = () => {
         {/* <Divider style={{ backgroundColor: themeColors.border }} /> */}
 
         {/* Speech Settings */}
-        {/* <List.Section>
-          <List.Subheader style={{ color: themeColors.text }}>
+        <List.Section>
+          <List.Subheader
+            style={[styles.subheader, { color: themeColors.text }]}
+          >
             Speech Settings
           </List.Subheader>
           <List.Item
@@ -193,7 +195,12 @@ export const AccessibilitySettingsScreen = () => {
             )}
           />
           <View style={styles.sliderContainer}>
-            <Text style={{ color: themeColors.text }}>Speech Rate</Text>
+            <View style={styles.sliderHeader}>
+              <Text style={{ color: themeColors.text }}>Speech Rate</Text>
+              <Text style={{ color: themeColors.secondary }}>
+                {Math.round(preferences.speech.rate)}
+              </Text>
+            </View>
             <Slider
               value={preferences.speech.rate}
               onValueChange={(value) =>
@@ -205,11 +212,13 @@ export const AccessibilitySettingsScreen = () => {
               minimumValue={0.5}
               maximumValue={2}
               step={0.1}
+              minimumTrackTintColor={themeColors.tint}
+              maximumTrackTintColor={themeColors.border}
             />
           </View>
         </List.Section>
 
-        <Divider style={{ backgroundColor: themeColors.border }} /> */}
+        <Divider style={{ backgroundColor: themeColors.border }} />
 
         {/* Focus Settings */}
         {/* <List.Section>

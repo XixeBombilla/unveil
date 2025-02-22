@@ -24,7 +24,11 @@ import { ImageGallery } from "../components/ImageGallery";
 import { ImageViewer } from "../components/ImageViewer";
 import { getThemeColors } from "../utils/theme";
 // icons
-import { saveArticle, getSavedArticles } from "../services/articleStorage";
+import {
+  saveArticle,
+  getSavedArticles,
+  removeArticle,
+} from "../services/articleStorage";
 
 export const ReaderScreen = () => {
   const route = useRoute();
@@ -103,10 +107,15 @@ export const ReaderScreen = () => {
   };
 
   const handleSaveArticle = async () => {
-    if (await checkIfSaved()) return;
-
-    await saveArticle(article);
-    setIsSaved(true);
+    if (isSaved) {
+      // If already saved, remove the article
+      await removeArticle(article.id);
+      setIsSaved(false);
+    } else {
+      // If not saved, save the article
+      await saveArticle(article);
+      setIsSaved(true);
+    }
   };
 
   useEffect(() => {
