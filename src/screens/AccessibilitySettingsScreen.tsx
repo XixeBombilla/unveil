@@ -14,6 +14,13 @@ export const AccessibilitySettingsScreen = () => {
     await updatePreferences(newPreferences);
   };
 
+  const handleRateChange = (value: number) => {
+    updatePreferences({
+      ...preferences,
+      speech: { ...preferences.speech, rate: value },
+    });
+  };
+
   return (
     <SafeAreaView
       style={[styles.safeArea, { backgroundColor: themeColors.background }]}
@@ -198,20 +205,15 @@ export const AccessibilitySettingsScreen = () => {
             <View style={styles.sliderHeader}>
               <Text style={{ color: themeColors.text }}>Speech Rate</Text>
               <Text style={{ color: themeColors.secondary }}>
-                {Math.round(preferences.speech.rate)}
+                {Math.round(preferences.speech.rate * 10) / 10}x
               </Text>
             </View>
             <Slider
               value={preferences.speech.rate}
-              onValueChange={(value) =>
-                savePreferences({
-                  ...preferences,
-                  speech: { ...preferences.speech, rate: value },
-                })
-              }
+              onValueChange={handleRateChange}
               minimumValue={0.5}
-              maximumValue={2}
-              step={0.1}
+              maximumValue={1.5}
+              step={0.05}
               minimumTrackTintColor={themeColors.tint}
               maximumTrackTintColor={themeColors.border}
             />

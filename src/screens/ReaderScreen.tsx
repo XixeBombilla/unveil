@@ -29,6 +29,7 @@ import {
   getSavedArticles,
   removeArticle,
 } from "../services/articleStorage";
+import * as Speech from "expo-speech";
 
 export const ReaderScreen = () => {
   const route = useRoute();
@@ -41,6 +42,7 @@ export const ReaderScreen = () => {
     null
   );
   const [isSaved, setIsSaved] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   const { preferences } = usePreferences();
   const themeColors = getThemeColors(preferences);
@@ -118,10 +120,33 @@ export const ReaderScreen = () => {
     }
   };
 
+  const handleReadAloud = () => {
+    const readableText = article.content
+      .map((item) => {
+        if (item.type === "heading") {
+          return `${item.content}\n`;
+        } else if (item.type === "paragraph") {
+          return `${item.content}\n\n`;
+        }
+        return "";
+      })
+      .join("");
+
+    if (isSpeaking) {
+      Speech.stop();
+    } else {
+      Speech.speak(readableText, {
+        rate: preferences.speech.rate || 1, // Use the updated speech rate from preferences
+      });
+    }
+    setIsSpeaking(!isSpeaking);
+  };
+
   useEffect(() => {
     return () => {
       setLoading(false);
       setExtractorUrl(null);
+      Speech.stop();
     };
   }, []);
 
@@ -190,6 +215,12 @@ export const ReaderScreen = () => {
               size={24}
               iconColor={themeColors.text}
               onPress={handleSaveArticle}
+            />
+            <IconButton
+              icon={isSpeaking ? "pause" : "play"}
+              size={24}
+              iconColor={themeColors.text}
+              onPress={handleReadAloud}
             />
           </View>
         </>

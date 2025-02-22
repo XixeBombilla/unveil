@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView, Image, Alert } from "react-native";
-import { TextInput, Button, Text } from "react-native-paper";
+import { TextInput, Button } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { createArticle } from "../services/contentExtraction";
 import { ContentExtractor } from "../components/ContentExtractor";
@@ -45,8 +45,6 @@ export const URLInputScreen = () => {
   const handleError = () => {
     setShowExtractor(false);
     setLoading(false);
-    console.error("Failed to extract content");
-    // TODO: Show error message
   };
 
   return (
@@ -96,6 +94,8 @@ export const URLInputScreen = () => {
                   primary: themeColors.text,
                 },
               }}
+              multiline={false}
+              numberOfLines={1}
             />
           </>
         )}
