@@ -24,7 +24,6 @@ import { ImageGallery } from "../components/ImageGallery";
 import { ImageViewer } from "../components/ImageViewer";
 import { getThemeColors } from "../utils/theme";
 // icons
-import IconUnveil from "../components/IconSvg";
 import { saveArticle, getSavedArticles } from "../services/articleStorage";
 
 export const ReaderScreen = () => {
@@ -146,7 +145,6 @@ export const ReaderScreen = () => {
               onPress={() => navigation.goBack()}
               style={styles.backButton}
             />
-            <IconUnveil props={{}} />
             <View style={styles.headerContent}>
               <Text
                 style={[styles.headerTitle, { color: themeColors.text }]}
