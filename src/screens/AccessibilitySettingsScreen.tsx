@@ -24,7 +24,9 @@ export const AccessibilitySettingsScreen = () => {
       >
         {/* Text Settings */}
         <List.Section>
-          <List.Subheader style={{ color: themeColors.text }}>
+          <List.Subheader
+            style={[styles.subheader, { color: themeColors.text }]}
+          >
             Text Settings
           </List.Subheader>
           <View style={styles.sliderContainer}>
@@ -89,7 +91,9 @@ export const AccessibilitySettingsScreen = () => {
 
         {/* Visual Settings */}
         <List.Section>
-          <List.Subheader style={{ color: themeColors.text }}>
+          <List.Subheader
+            style={[styles.subheader, { color: themeColors.text }]}
+          >
             Visual Settings
           </List.Subheader>
           <List.Item
@@ -347,6 +351,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginBottom: 8,
+  },
+  subheader: {
+    fontWeight: "bold",
   },
 });
 

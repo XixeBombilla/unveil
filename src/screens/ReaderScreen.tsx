@@ -16,8 +16,9 @@ import {
 import { ContentExtractor } from "../components/ContentExtractor";
 import { ImageGallery } from "../components/ImageGallery";
 import { ImageViewer } from "../components/ImageViewer";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getThemeColors } from "../utils/theme";
+// icons
+import IconUnveil from "../components/IconSvg";
 
 export const ReaderScreen = () => {
   const route = useRoute();
@@ -114,6 +115,7 @@ export const ReaderScreen = () => {
               onPress={() => navigation.goBack()}
               style={styles.backButton}
             />
+            <IconUnveil props={{}} />
             <View style={styles.headerContent}>
               <Text
                 style={[styles.headerTitle, { color: themeColors.text }]}
@@ -129,7 +131,7 @@ export const ReaderScreen = () => {
               </Text>
             </View>
             <IconButton
-              icon="home"
+              icon="magnify"
               size={24}
               iconColor={themeColors.text}
               onPress={() => navigation.popToTop()}
@@ -146,7 +148,7 @@ export const ReaderScreen = () => {
             ]}
           >
             <IconButton
-              icon="magnify"
+              icon="bookmark-outline"
               size={24}
               iconColor={themeColors.text}
               onPress={() => navigation.popToTop()}
@@ -233,7 +235,6 @@ export const ReaderScreen = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   header: {
     flexDirection: "row",
@@ -245,7 +246,8 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginTop: 10,
+    margin: 20,
+    borderRadius: 10,
   },
   backButton: {
     margin: -8,

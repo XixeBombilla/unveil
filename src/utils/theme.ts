@@ -10,4 +10,5 @@ export const getThemeColors = (preferences: UserPreferences) => ({
   inputBackground: preferences.theme === "dark" ? "#1E1E1E" : "#FFFFFF",
   inputText: preferences.theme === "dark" ? "#FFFFFF" : "#000000",
   tint: preferences.theme === "dark" ? "#00796B" : "#00796B",
+  safeAreaBackground: preferences.theme === "dark" ? "#1E1E1E" : "#F5F5F5",
 });

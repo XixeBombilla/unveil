@@ -33,9 +33,13 @@ function MainTabs() {
     <Tab.Navigator
       screenOptions={{
         tabBarAccessibilityLabel: "Main navigation",
-        tabBarActiveTintColor: themeColors.tint,
+        tabBarActiveTintColor: themeColors.text,
+        tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: themeColors.background,
+          backgroundColor: themeColors.safeAreaBackground,
+        },
+        tabBarItemStyle: {
+          padding: 10, // Added padding to the icons
         },
       }}
     >
@@ -44,6 +48,7 @@ function MainTabs() {
         component={URLInputScreen}
         options={{
           headerShown: false,
+          ...commonOptions,
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons
               name="chrome-reader-mode"
